@@ -105,7 +105,7 @@ func main() {
 	}()
 
 	// Start server
-	port := ":8082"
+	port := ":8080"
 	fmt.Printf("Server starting at http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }
