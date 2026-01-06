@@ -21,7 +21,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: web
-          image: ghcr.io/uberswe/awesometarkov.com:develop
+          image: ghcr.io/uberswe/awesometarkov.com:develop-77641d5
           ports:
             - containerPort: 8080
           envFrom:
