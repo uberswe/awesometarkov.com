@@ -1,0 +1,46 @@
+{{define "content"}}
+<div class="hero">
+    <h1>Awesome Tarkov Resources</h1>
+    <p class="hero-subtitle">
+        A comprehensive collection of <strong>{{.TotalResources}}+ curated resources</strong> for Escape From Tarkov players, from interactive maps and ammo charts to quest trackers and community tools.
+    </p>
+    <p class="hero-description">
+        Built by the community, for the community. Your one-stop destination for surviving and thriving in Tarkov.
+    </p>
+</div>
+
+<section class="categories-section">
+    <h2>Browse by Category</h2>
+    <div class="category-grid">
+        {{range .Categories}}
+        <a href="/category/{{.Slug}}" class="category-card">
+            <h3>{{.Name}}</h3>
+            <p class="subcategory-count">{{len .Subcategories}} subcategories</p>
+            <ul class="subcategory-preview">
+                {{range $i, $sub := .Subcategories}}
+                {{if lt $i 3}}
+                <li>{{$sub.Name}}</li>
+                {{end}}
+                {{end}}
+                {{if gt (len .Subcategories) 3}}
+                <li class="more">+{{subtract (len .Subcategories) 3}} more</li>
+                {{end}}
+            </ul>
+        </a>
+        {{end}}
+    </div>
+</section>
+
+<section class="contribute-section">
+    <h2>Contribute</h2>
+    <p>
+        Know a great Tarkov resource that's missing from this list?
+        We welcome contributions from the community!
+    </p>
+    <a href="https://github.com/uberswe/awesometarkov.com" target="_blank" rel="noopener" class="contribute-link">
+        Open a Pull Request on GitHub
+    </a>
+</section>
+{{end}}
+
+{{template "base" .}}

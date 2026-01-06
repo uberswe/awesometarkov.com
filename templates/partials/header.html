@@ -1,0 +1,17 @@
+{{define "header"}}
+<header class="header">
+    <div class="header-content">
+        <a href="/" class="logo">
+            <span class="logo-icon">&#9670;</span>
+            Awesome Tarkov
+        </a>
+        <form action="/search" method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Search resources..." class="search-input"{{if .Query}} value="{{.Query}}"{{end}}>
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        <a href="https://github.com/uberswe/awesometarkov.com" target="_blank" rel="noopener" class="contribute-btn">
+            + Add Resource
+        </a>
+    </div>
+</header>
+{{end}}

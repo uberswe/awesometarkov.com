@@ -1,0 +1,97 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Meta Tags -->
+    <title>{{.Meta.Title}}</title>
+    <meta name="description" content="{{.Meta.Description}}">
+    <link rel="canonical" href="{{.Meta.CanonicalURL}}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{{.Meta.OGType}}">
+    <meta property="og:url" content="{{.Meta.CanonicalURL}}">
+    <meta property="og:title" content="{{.Meta.Title}}">
+    <meta property="og:description" content="{{.Meta.Description}}">
+    <meta property="og:image" content="{{.Meta.OGImage}}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Awesome Tarkov">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{.Meta.CanonicalURL}}">
+    <meta name="twitter:title" content="{{.Meta.Title}}">
+    <meta name="twitter:description" content="{{.Meta.Description}}">
+    <meta name="twitter:image" content="{{.Meta.OGImage}}">
+
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- JSON-LD Structured Data -->
+    {{template "jsonld" .}}
+</head>
+<body>
+    {{template "header" .}}
+
+    <div class="main-layout">
+        {{template "sidebar" .}}
+
+        <main class="content">
+            {{template "content" .}}
+        </main>
+    </div>
+
+    {{template "footer" .}}
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-consent" class="cookie-consent" style="display: none;">
+        <div class="cookie-content">
+            <p>We use cookies to analyze site traffic and improve your experience. By clicking "Accept", you consent to our use of cookies. <a href="/privacy">Learn more</a></p>
+            <div class="cookie-buttons">
+                <button id="cookie-accept" class="cookie-btn cookie-accept">Accept</button>
+                <button id="cookie-decline" class="cookie-btn cookie-decline">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        var consent = localStorage.getItem('cookieConsent');
+        var banner = document.getElementById('cookie-consent');
+
+        function loadGoogleAnalytics() {
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-DW86192VHV';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', 'G-DW86192VHV');
+        }
+
+        if (consent === 'accepted') {
+            loadGoogleAnalytics();
+        } else if (consent !== 'declined') {
+            banner.style.display = 'block';
+        }
+
+        document.getElementById('cookie-accept').addEventListener('click', function() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            banner.style.display = 'none';
+            loadGoogleAnalytics();
+        });
+
+        document.getElementById('cookie-decline').addEventListener('click', function() {
+            localStorage.setItem('cookieConsent', 'declined');
+            banner.style.display = 'none';
+        });
+    })();
+    </script>
+</body>
+</html>
+{{end}}

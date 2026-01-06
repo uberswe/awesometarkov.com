@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: awesometarkov-com-prod-tls
+  namespace: awesometarkov-com-prod
+spec:
+  secretName: awesometarkov-com-prod-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - awesometarkov.com
+    - www.awesometarkov.com

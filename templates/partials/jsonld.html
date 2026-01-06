@@ -1,0 +1,93 @@
+{{define "jsonld"}}
+{{if eq .Meta.PageType "home"}}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Awesome Tarkov",
+    "url": "{{.Meta.CanonicalURL}}",
+    "description": "{{.Meta.Description}}",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.awesometarkov.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+{{else if eq .Meta.PageType "category"}}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {{range $i, $bc := .Breadcrumbs}}
+                {{if $i}},{{end}}
+                {
+                    "@type": "ListItem",
+                    "position": {{add $i 1}},
+                    "name": "{{$bc.Name}}",
+                    "item": "{{$bc.URL}}"
+                }
+                {{end}}
+            ]
+        },
+        {
+            "@type": "CollectionPage",
+            "name": "{{.Category.Name}}",
+            "url": "{{.Meta.CanonicalURL}}",
+            "description": "{{.Meta.Description}}"
+        }
+    ]
+}
+</script>
+{{else if eq .Meta.PageType "resource"}}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {{range $i, $bc := .Breadcrumbs}}
+                {{if $i}},{{end}}
+                {
+                    "@type": "ListItem",
+                    "position": {{add $i 1}},
+                    "name": "{{$bc.Name}}",
+                    "item": "{{$bc.URL}}"
+                }
+                {{end}}
+            ]
+        },
+        {
+            "@type": "SoftwareApplication",
+            "name": "{{.Resource.Name}}",
+            "url": "{{.Resource.URL}}",
+            "description": "{{.Resource.Description}}",
+            "applicationCategory": "{{.Resource.CategoryName}}",
+            "operatingSystem": "{{.Resource.Platform}}",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            }
+        }
+    ]
+}
+</script>
+{{else if eq .Meta.PageType "search"}}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SearchResultsPage",
+    "name": "{{.Meta.Title}}",
+    "url": "{{.Meta.CanonicalURL}}"
+}
+</script>
+{{end}}
+{{end}}

@@ -1,0 +1,190 @@
+{{define "redirect.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaving Awesome Tarkov</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0a0a;
+            color: #e5e5e5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .redirect-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .redirect-card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 3rem;
+            max-width: 600px;
+            text-align: center;
+        }
+        .redirect-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+        .redirect-title {
+            font-size: 1.75rem;
+            color: #e5e5e5;
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+        .redirect-message {
+            color: #737373;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .redirect-url {
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            word-break: break-all;
+        }
+        .redirect-url a {
+            color: #c49a3c;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .redirect-url a:hover {
+            text-decoration: underline;
+        }
+        .countdown {
+            font-size: 1.25rem;
+            color: #737373;
+            margin-bottom: 1.5rem;
+        }
+        .countdown-number {
+            color: #c49a3c;
+            font-weight: bold;
+            font-size: 2rem;
+        }
+        .redirect-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #c49a3c;
+            color: #0a0a0a;
+        }
+        .btn-primary:hover {
+            background: #9a7a2c;
+        }
+        .btn-secondary {
+            background: #1a1a1a;
+            color: #e5e5e5;
+            border: 1px solid #2a2a2a;
+        }
+        .btn-secondary:hover {
+            border-color: #c49a3c;
+        }
+        .resource-info {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #2a2a2a;
+            color: #737373;
+            font-size: 0.9rem;
+        }
+        .resource-info strong {
+            color: #e5e5e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-container">
+        <div class="redirect-card">
+            <div class="redirect-icon">&#9670;</div>
+            <h1 class="redirect-title">You are leaving Awesome Tarkov</h1>
+            <p class="redirect-message">
+                You are about to visit an external website. We are not responsible for the content of external sites.
+            </p>
+
+            <div class="redirect-url">
+                <a href="{{.URL}}" id="external-link" rel="noopener noreferrer">{{.URL}}</a>
+            </div>
+
+            <div class="countdown">
+                Redirecting in <span class="countdown-number" id="countdown">10</span> seconds
+            </div>
+
+            <div class="redirect-actions">
+                <a href="{{.URL}}" class="btn btn-primary" rel="noopener noreferrer">Continue Now</a>
+                <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+            </div>
+
+            <div class="resource-info">
+                Visiting: <strong>{{.ResourceName}}</strong>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var seconds = 10;
+            var countdownEl = document.getElementById('countdown');
+            var externalLink = document.getElementById('external-link');
+            var targetUrl = externalLink ? externalLink.href : '';
+
+            var interval = setInterval(function() {
+                seconds--;
+                countdownEl.textContent = seconds;
+
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    if (targetUrl) {
+                        window.location.href = targetUrl;
+                    }
+                }
+            }, 1000);
+        })();
+    </script>
+
+    <script>
+    (function() {
+        var consent = localStorage.getItem('cookieConsent');
+
+        function loadGoogleAnalytics() {
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-DW86192VHV';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', 'G-DW86192VHV');
+        }
+
+        if (consent === 'accepted') {
+            loadGoogleAnalytics();
+        }
+    })();
+    </script>
+</body>
+</html>
+{{end}}

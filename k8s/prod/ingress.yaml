@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: web-prod
+  namespace: awesometarkov-com-prod
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`awesometarkov.com`) || Host(`www.awesometarkov.com`)
+      services:
+        - name: web
+          port: 80
+  tls:
+    secretName: awesometarkov-com-prod-tls

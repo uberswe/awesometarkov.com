@@ -1,0 +1,47 @@
+{{define "content"}}
+<div class="category-header">
+    <nav class="breadcrumb">
+        <a href="/">Home</a> / <span>{{.Category.Name}}</span>
+    </nav>
+    <h1>{{.Category.Name}}</h1>
+</div>
+
+{{range .Category.Subcategories}}
+<section class="subcategory-section">
+    <h2 id="{{.Slug}}">{{.Name}}</h2>
+
+    {{if .Resources}}
+    <div class="table-wrapper">
+        <table class="resource-table">
+            <thead>
+                <tr>
+                    <th>Resource</th>
+                    <th>Description</th>
+                    <th>Platform</th>
+                    <th>Audience</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Resources}}
+                <tr>
+                    <td class="resource-name">
+                        <a href="/resource/{{.CategorySlug}}/{{.Slug}}">{{.Name}}</a>
+                    </td>
+                    <td class="resource-description">{{.Description}}</td>
+                    <td class="resource-platform">{{.Platform}}</td>
+                    <td class="resource-audience">{{.Audience}}</td>
+                    <td class="resource-price">{{.Price}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+    {{else}}
+    <p class="no-resources">No resources in this subcategory yet.</p>
+    {{end}}
+</section>
+{{end}}
+{{end}}
+
+{{template "base" .}}

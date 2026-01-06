@@ -1,0 +1,15 @@
+{{define "sidebar"}}
+<nav class="sidebar">
+    <h3 class="sidebar-title">Categories</h3>
+    <ul class="category-list">
+        {{range .Categories}}
+        <li>
+            <a href="/category/{{.Slug}}" class="category-link">
+                {{.Name}}
+                <span class="resource-count">{{len .Subcategories}}</span>
+            </a>
+        </li>
+        {{end}}
+    </ul>
+</nav>
+{{end}}

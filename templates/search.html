@@ -1,0 +1,38 @@
+{{define "content"}}
+<div class="search-header">
+    <h1>Search Results</h1>
+    {{if .Query}}
+    <p class="search-info">
+        Found <strong>{{.ResultCount}}</strong> results for "<strong>{{.Query}}</strong>"
+    </p>
+    {{else}}
+    <p class="search-info">Enter a search term to find resources.</p>
+    {{end}}
+</div>
+
+{{if and .Query (gt .ResultCount 0)}}
+<div class="search-results">
+    {{range .Results}}
+    <div class="search-result-card">
+        <div class="result-header">
+            <a href="/resource/{{.Resource.CategorySlug}}/{{.Resource.Slug}}" class="result-name">{{.Resource.Name}}</a>
+            <span class="result-category">{{.Category}} / {{.Subcategory}}</span>
+        </div>
+        <p class="result-description">{{.Resource.Description}}</p>
+        <div class="result-meta">
+            <span class="meta-item platform">{{.Resource.Platform}}</span>
+            <span class="meta-item audience">{{.Resource.Audience}}</span>
+            <span class="meta-item price">{{.Resource.Price}}</span>
+        </div>
+    </div>
+    {{end}}
+</div>
+{{else if .Query}}
+<div class="no-results">
+    <p>No resources found matching your search.</p>
+    <p>Try different keywords or <a href="/">browse categories</a>.</p>
+</div>
+{{end}}
+{{end}}
+
+{{template "base" .}}

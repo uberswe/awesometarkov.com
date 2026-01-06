@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config
+  namespace: awesometarkov-com-dev
+data:
+  ENV: "development"
+  BASE_URL: "https://awesometarkov-com.9m.se"

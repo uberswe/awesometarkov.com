@@ -1,0 +1,68 @@
+name: Fetch Official News
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch-news:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Fetch official BSG news
+        run: |
+          mkdir -p data
+          curl -s "https://escapefromtarkov.com/news" \
+            -H "User-Agent: AwesomeTarkov/1.0" \
+            -o data/bsg-news-raw.html || true
+          date -u +%Y-%m-%dT%H:%M:%SZ > data/last-fetch.txt
+
+      - name: Parse and update news data
+        run: |
+          cat > data/news.json << 'EOFNEWS'
+          {
+            "sources": [
+              {
+                "name": "Official BSG News",
+                "url": "https://escapefromtarkov.com/news",
+                "type": "web"
+              },
+              {
+                "name": "BSG Twitter",
+                "url": "https://twitter.com/baborovoi",
+                "type": "twitter"
+              },
+              {
+                "name": "Tarkov Changes",
+                "url": "https://tarkov-changes.com",
+                "type": "web"
+              }
+            ],
+            "items": []
+          }
+          EOFNEWS
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          if git diff --quiet data/; then
+            echo "No changes to commit"
+          else
+            git add data/
+            git commit -m "Update news data [automated]"
+            git push
+          fi
