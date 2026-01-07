@@ -1,3 +1,4 @@
+---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -7,10 +8,49 @@ spec:
   entryPoints:
     - websecure
   routes:
+    # Route for Authentik outpost callbacks - required for auth flow
+    - kind: Rule
+      match: Host(`awesometarkov-com.9m.se`) && PathPrefix(`/outpost.goauthentik.io/`)
+      services:
+        - kind: Service
+          name: authentik-server
+          namespace: authentik
+          port: 80
+    # Main route with forwardAuth
     - kind: Rule
       match: Host(`awesometarkov-com.9m.se`)
       services:
         - name: web
           port: 80
+      middlewares:
+        - name: authentik-forwardauth
   tls:
     secretName: awesometarkov-com-dev-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: web-dev-http
+  namespace: awesometarkov-com-dev
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`awesometarkov-com.9m.se`)
+      services:
+        - name: web
+          port: 80
+      middlewares:
+        - name: https-redirect
+          namespace: awesometarkov-com-dev
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: https-redirect
+  namespace: awesometarkov-com-dev
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
